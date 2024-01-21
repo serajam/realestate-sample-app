@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -eo pipefail
+
+cd tests && make test.e2e
+cd ..
+make gen-swag
+git add docs/*

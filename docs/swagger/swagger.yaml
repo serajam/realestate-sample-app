@@ -1,0 +1,889 @@
+basePath: /api
+definitions:
+  AuthToken:
+    properties:
+      token:
+        type: string
+    type: object
+  DefaultResponseContainer:
+    properties:
+      count:
+        type: integer
+      data: {}
+      totalCount:
+        type: integer
+    type: object
+  EmptyResponse:
+    type: object
+  ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  PropertyCreateRequest:
+    properties:
+      address:
+        $ref: '#/definitions/dto.Address'
+      bathroom:
+        maximum: 50
+        minimum: 0
+        type: integer
+      bedroom:
+        maximum: 50
+        minimum: 0
+        type: integer
+      brokerName:
+        maxLength: 120
+        minLength: 0
+        type: string
+      condition:
+        maximum: 20
+        minimum: 0
+        type: integer
+      description:
+        maxLength: 10000
+        minLength: 0
+        type: string
+      floor:
+        maximum: 999
+        minimum: 0
+        type: integer
+      fullAddress:
+        maxLength: 1000
+        minLength: 0
+        type: string
+      has3DTour:
+        type: boolean
+      hasAC:
+        type: boolean
+      hasGarage:
+        type: boolean
+      hasImages:
+        type: boolean
+      hasVideo:
+        type: boolean
+      homeSize:
+        maximum: 9999
+        minimum: 0
+        type: number
+      homeType:
+        maximum: 20
+        minimum: 0
+        type: integer
+      isActiveStatus:
+        type: boolean
+      location:
+        $ref: '#/definitions/PropertyLocation'
+      lotSize:
+        maximum: 9999
+        minimum: 0
+        type: number
+      price:
+        maximum: 99999999
+        minimum: 0
+        type: number
+      priceCurrency:
+        maxLength: 3
+        minLength: 0
+        type: string
+      propertyType:
+        maximum: 20
+        minimum: 0
+        type: integer
+      totalFloors:
+        maximum: 999
+        minimum: 0
+        type: integer
+      totalParking:
+        maximum: 100
+        minimum: 0
+        type: integer
+      yearBuild:
+        maximum: 9999
+        minimum: 0
+        type: integer
+    required:
+    - bathroom
+    - bedroom
+    - brokerName
+    - condition
+    - description
+    - floor
+    - fullAddress
+    - homeSize
+    - homeType
+    - location
+    - lotSize
+    - price
+    - priceCurrency
+    - propertyType
+    - totalFloors
+    - yearBuild
+    type: object
+  PropertyLocation:
+    properties:
+      lat:
+        type: number
+      long:
+        type: number
+    required:
+    - lat
+    - long
+    type: object
+  PropertyResponse:
+    properties:
+      actualDays:
+        type: integer
+      address:
+        $ref: '#/definitions/dto.Address'
+      bathroom:
+        type: integer
+      bedroom:
+        type: integer
+      brokerName:
+        type: string
+      condition:
+        type: integer
+      description:
+        type: string
+      floor:
+        type: integer
+      fullAddress:
+        type: string
+      has3DTour:
+        type: boolean
+      hasAC:
+        type: boolean
+      hasGarage:
+        type: boolean
+      hasImages:
+        type: boolean
+      hasVideo:
+        type: boolean
+      homeSize:
+        type: number
+      homeType:
+        type: integer
+      id:
+        type: integer
+      images:
+        items:
+          type: string
+        type: array
+      isActiveStatus:
+        type: boolean
+      isFavorite:
+        type: boolean
+      location:
+        $ref: '#/definitions/PropertyLocation'
+      lotSize:
+        type: number
+      price:
+        type: number
+      priceCurrency:
+        type: string
+      propertyType:
+        type: integer
+      totalFloors:
+        type: integer
+      totalParking:
+        type: integer
+      yearBuild:
+        type: integer
+    type: object
+  SignIn:
+    properties:
+      email:
+        maxLength: 100
+        minLength: 3
+        type: string
+      password:
+        maxLength: 100
+        minLength: 8
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  SignUp:
+    properties:
+      email:
+        maxLength: 100
+        minLength: 3
+        type: string
+      name:
+        maxLength: 30
+        minLength: 2
+        type: string
+      password:
+        maxLength: 100
+        minLength: 8
+        type: string
+      surname:
+        maxLength: 30
+        minLength: 2
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  dto.Address:
+    properties:
+      city:
+        maxLength: 100
+        type: string
+      country:
+        maxLength: 100
+        type: string
+      houseNumber:
+        maxLength: 10
+        type: string
+      neighborhood:
+        maxLength: 100
+        type: string
+      state:
+        maxLength: 100
+        type: string
+      street:
+        maxLength: 200
+        type: string
+      zipCode:
+        maxLength: 10
+        type: string
+    type: object
+  dto.Polygon:
+    properties:
+      botLat:
+        type: string
+      botLong:
+        type: string
+      topLat:
+        type: string
+      topLong:
+        type: string
+    type: object
+  dto.PropertyListRequest:
+    properties:
+      ids:
+        items:
+          type: integer
+        maxItems: 10
+        type: array
+    required:
+    - ids
+    type: object
+  dto.PropertySearchRequest:
+    properties:
+      bathroom:
+        type: integer
+      bathroomExact:
+        type: boolean
+      bedroom:
+        type: integer
+      bedroomExact:
+        type: boolean
+      city:
+        maxLength: 255
+        type: string
+      condition:
+        items:
+          type: integer
+        type: array
+      countryCode:
+        maxLength: 2
+        type: string
+      hasAC:
+        type: boolean
+      hasGarage:
+        type: boolean
+      homeSizeFrom:
+        type: number
+      homeSizeTo:
+        type: number
+      homeType:
+        items:
+          type: integer
+        type: array
+      lotSizeFrom:
+        type: number
+      lotSizeTo:
+        type: number
+      page:
+        maximum: 100000
+        type: integer
+      parkingNumber:
+        type: integer
+      polygon:
+        $ref: '#/definitions/dto.Polygon'
+      priceFrom:
+        type: number
+      priceTo:
+        type: number
+      propertyType:
+        type: integer
+      size:
+        maximum: 1000
+        type: integer
+      sort:
+        maximum: 15
+        minimum: 1
+        type: integer
+      yearBuildFrom:
+        type: integer
+      yearBuildTo:
+        type: integer
+    type: object
+  dto.SearchFilters:
+    properties:
+      bathroom:
+        type: integer
+      bathroomExact:
+        type: boolean
+      bedroom:
+        type: integer
+      bedroomExact:
+        type: boolean
+      condition:
+        items:
+          type: integer
+        type: array
+      hasAC:
+        type: boolean
+      hasGarage:
+        type: boolean
+      homeSizeFrom:
+        type: number
+      homeSizeTo:
+        type: number
+      homeType:
+        items:
+          type: integer
+        type: array
+      lotSizeFrom:
+        type: number
+      lotSizeTo:
+        type: number
+      parkingNumber:
+        type: integer
+      priceFrom:
+        type: number
+      priceTo:
+        type: number
+      propertyType:
+        type: integer
+      yearBuildFrom:
+        type: integer
+      yearBuildTo:
+        type: integer
+    type: object
+  dto.SearchFiltersRequest:
+    properties:
+      coordinatesRect:
+        $ref: '#/definitions/dto.Polygon'
+      emailFrequency:
+        maximum: 10
+        minimum: 1
+        type: integer
+      filterValues:
+        $ref: '#/definitions/dto.SearchFilters'
+      name:
+        maxLength: 300
+        type: string
+      sort:
+        maximum: 10
+        minimum: 1
+        type: integer
+    type: object
+  dto.SearchFiltersResponse:
+    properties:
+      coordinatesRect:
+        items:
+          type: integer
+        type: array
+      emailFrequency:
+        maximum: 10
+        minimum: 1
+        type: integer
+      filterValues:
+        items:
+          type: integer
+        type: array
+      id:
+        type: integer
+      name:
+        maxLength: 300
+        type: string
+      sort:
+        maximum: 10
+        minimum: 1
+        type: integer
+    required:
+    - emailFrequency
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: realestate
+  title: realestate
+  version: "1.0"
+paths:
+  /v1/properties:
+    post:
+      consumes:
+      - application/json
+      description: Create PropertyCreateRequest
+      parameters:
+      - description: property data
+        in: body
+        name: signUpUser
+        required: true
+        schema:
+          $ref: '#/definitions/PropertyCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/DefaultResponseContainer'
+            - properties:
+                data:
+                  $ref: '#/definitions/PropertyResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create PropertyCreateRequest
+      tags:
+      - properties
+  /v1/properties/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get PropertyCreateRequest by ID
+      parameters:
+      - description: PropertyCreateRequest ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/DefaultResponseContainer'
+            - properties:
+                data:
+                  $ref: '#/definitions/PropertyResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      summary: Get PropertyCreateRequest by ID
+      tags:
+      - properties
+    put:
+      consumes:
+      - application/json
+      description: Update PropertyCreateRequest by ID
+      parameters:
+      - description: property data
+        in: body
+        name: signUpUser
+        required: true
+        schema:
+          $ref: '#/definitions/PropertyCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/DefaultResponseContainer'
+            - properties:
+                data:
+                  $ref: '#/definitions/PropertyResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update PropertyCreateRequest
+      tags:
+      - properties
+  /v1/properties/list:
+    post:
+      consumes:
+      - application/json
+      description: List properties by ids.
+      parameters:
+      - description: property list body
+        in: body
+        name: Search
+        required: true
+        schema:
+          $ref: '#/definitions/dto.PropertyListRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/DefaultResponseContainer'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/PropertyResponse'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      summary: List properties by ids.
+      tags:
+      - properties
+  /v1/properties/search:
+    post:
+      consumes:
+      - application/json
+      description: Search properties using different filters
+      parameters:
+      - description: property search body
+        in: body
+        name: Search
+        required: true
+        schema:
+          $ref: '#/definitions/dto.PropertySearchRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/DefaultResponseContainer'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/PropertyResponse'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      summary: Search properties.
+      tags:
+      - properties
+  /v1/saved-searches:
+    get:
+      consumes:
+      - application/json
+      description: List users search filters.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/DefaultResponseContainer'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/dto.SearchFiltersResponse'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      summary: List users search filters.
+      tags:
+      - searchfilters
+    post:
+      consumes:
+      - application/json
+      description: Create SearchFilters
+      parameters:
+      - description: search filter data
+        in: body
+        name: signUpUser
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SearchFiltersRequest'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+          schema:
+            $ref: '#/definitions/EmptyResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create SearchFilters
+      tags:
+      - searchfilters
+  /v1/saved-searches/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Update SearchFilters by ID
+      parameters:
+      - description: search filters data
+        in: body
+        name: signUpUser
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SearchFiltersRequest'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+          schema:
+            $ref: '#/definitions/EmptyResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update SearchFilters
+      tags:
+      - searchfilters
+  /v1/sign-in:
+    post:
+      consumes:
+      - application/json
+      description: SignIn User
+      parameters:
+      - description: user login
+        in: body
+        name: sigInpUser
+        required: true
+        schema:
+          $ref: '#/definitions/SignIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/AuthToken'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      summary: SignIn User
+      tags:
+      - auth
+  /v1/sign-up:
+    post:
+      consumes:
+      - application/json
+      description: SignUp User and send verification email
+      parameters:
+      - description: user data
+        in: body
+        name: signUpUser
+        required: true
+        schema:
+          $ref: '#/definitions/SignUp'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/AuthToken'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      summary: SignUp User
+      tags:
+      - registration
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

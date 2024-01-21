@@ -1,0 +1,91 @@
+version: '3.9'
+services:
+  mailhog:
+    image: mailhog/mailhog:latest
+    restart: always
+    ports:
+      - "1025:1025"
+      - "8025:8025" # localhost:8025 for viewing emails
+    logging:
+      driver: 'none'  # disable saving logs
+  nats:
+    image: docker.io/bitnami/nats:2
+    ports:
+      - '4222:4222'
+  db:
+    image: postgis/postgis:15-3.3-alpine
+    container_name: local_pgdb
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: estate_finder
+    ports:
+      - "5431:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+  cache:
+    image: bitnami/redis:latest
+    restart: always
+    ports:
+      - '6379:6379'
+    #command: redis-server --save 20 1 --loglevel debug --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    environment:
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL,CONFIG
+      - REDIS_PASSWORD=eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes:
+      - 'redis_data:/bitnami/redis/data'
+  minio:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio:/data
+    environment:
+      MINIO_ROOT_USER: minzio
+      MINIO_ROOT_PASSWORD: eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    command: server --console-address ":9001" /data
+
+  web:
+    image: realestate/api
+    build:
+      context: .
+    restart: unless-stopped
+    environment:
+      GENERATE_TEST_DATA: "${GENERATE_TEST_DATA:-true}"
+      CLEANUP_DB: "${CLEANUP_DB:-true}"
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: estate_finder
+      POSTGRES_HOST: db
+      REDIS_HOST: cache
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+      NATS_HOST: nats
+      NATS_PORT: 4222
+      AWS_KEY: minzio
+      AWS_SECRET: eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+      AWS_ENDPOINT: minio:9000
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:8080/health || exit 1
+      interval: 5s
+      retries: 5
+      timeout: 60s
+    depends_on:
+      - db
+      - mailhog
+      - cache
+      - nats
+      - minio
+volumes:
+  db-data:
+    driver: local
+  redis_data:
+    driver: local
+  nats_data:
+    driver: local
+  minio:
+    driver: local

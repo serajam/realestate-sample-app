@@ -1,0 +1,1 @@
+alter table properties add living_size NUMERIC NOT NULL DEFAULT 0;

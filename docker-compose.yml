@@ -2,6 +2,7 @@ version: '3.9'
 services:
   mailhog:
     image: mailhog/mailhog:latest
+    container_name: realestate_mailhog
     restart: always
     ports:
       - "1025:1025"
@@ -10,22 +11,24 @@ services:
       driver: 'none'  # disable saving logs
   nats:
     image: docker.io/bitnami/nats:2
+    container_name: realestate_nats
     ports:
       - '4222:4222'
   db:
     image: postgis/postgis:15-3.3-alpine
-    container_name: local_pgdb
+    container_name: realestate_pgdb
     restart: always
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
-      POSTGRES_DB: estate_finder
     ports:
-      - "5431:5432"
+      - "5432:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
+      - ./bin/init_db.sh:/docker-entrypoint-initdb.d/init-database.sh
   cache:
     image: bitnami/redis:latest
+    container_name: realestate_cache
     restart: always
     ports:
       - '6379:6379'
@@ -37,6 +40,7 @@ services:
       - 'redis_data:/bitnami/redis/data'
   minio:
     image: minio/minio
+    container_name: realestate_minio
     ports:
       - "9000:9000"
       - "9001:9001"
@@ -47,17 +51,19 @@ services:
       MINIO_ROOT_PASSWORD: eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
     command: server --console-address ":9001" /data
 
-  web:
+  api:
     image: realestate/api
+    container_name: realestate_api
     build:
       context: .
     restart: unless-stopped
     environment:
       GENERATE_TEST_DATA: "${GENERATE_TEST_DATA:-true}"
+      POSTGRES_QUERY_DEBUG: "${POSTGRES_QUERY_DEBUG:-false}"
       CLEANUP_DB: "${CLEANUP_DB:-true}"
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
-      POSTGRES_DB: estate_finder
+      POSTGRES_DB: realestate
       POSTGRES_HOST: db
       REDIS_HOST: cache
       REDIS_PORT: 6379
